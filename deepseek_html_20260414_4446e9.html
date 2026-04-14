@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>体育精神互动体验 | 火炬传递 · 签名传承</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #03050b;
+            color: #f0f3ff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .interactive-container {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(8, 12, 24, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 64px;
+            padding: 2rem 2rem 2.5rem;
+            border: 1px solid rgba(245,176,66,0.3);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        h1 {
+            font-size: 2.2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #FFE6A3, #FFB347);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .sub {
+            text-align: center;
+            color: #b9c8ff;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        .torch-section {
+            background: radial-gradient(circle at center, rgba(245,176,66,0.15), transparent);
+            border-radius: 48px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .torch {
+            font-size: 5rem;
+            cursor: pointer;
+            transition: 0.2s;
+            filter: drop-shadow(0 0 8px #f5b042);
+            display: inline-block;
+        }
+        .torch:hover {
+            transform: scale(1.08);
+            text-shadow: 0 0 20px #ffb347;
+        }
+        .flame-bar {
+            width: 80%;
+            height: 14px;
+            background: #2a2f44;
+            border-radius: 20px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+        .flame-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #f5b042, #ff7e33);
+            border-radius: 20px;
+            transition: width 0.4s ease;
+        }
+        .torch-stats {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 0.8rem;
+            font-size: 0.9rem;
+        }
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .card {
+            background: rgba(0,0,0,0.4);
+            border-radius: 40px;
+            padding: 1.5rem;
+            border: 1px solid rgba(245,176,66,0.2);
+        }
+        .card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .signature-wall {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-height: 180px;
+            overflow-y: auto;
+            background: rgba(0,0,0,0.3);
+            border-radius: 32px;
+            padding: 12px;
+            margin-top: 1rem;
+        }
+        .sign-tag {
+            background: rgba(245,176,66,0.2);
+            border-radius: 40px;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            border: 1px solid #f5b042;
+        }
+        input, button {
+            font-family: inherit;
+            border: none;
+            outline: none;
+        }
+        input {
+            width: 100%;
+            padding: 10px 16px;
+            border-radius: 40px;
+            background: #1e243b;
+            border: 1px solid #f5b042;
+            color: white;
+            margin: 8px 0;
+        }
+        button {
+            background: #f5b042;
+            color: #0a0c12;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 8px;
+        }
+        button:hover {
+            background: #ffcd7e;
+            transform: scale(1.02);
+        }
+        .poster-preview {
+            background: linear-gradient(145deg, #f5b042, #e0891a);
+            border-radius: 32px;
+            padding: 1.2rem;
+            text-align: center;
+            color: #0a0c12;
+            margin-top: 1rem;
+        }
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            z-index: 99;
+            border: 1px solid #f5b042;
+        }
+        @media (max-width: 760px) {
+            .two-col { grid-template-columns: 1fr; gap: 1.2rem; }
+            .interactive-container { padding: 1.5rem; }
+            h1 { font-size: 1.6rem; }
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.7rem;
+            color: #8f9bb3;
+        }
+    </style>
+</head>
+<body>
+<div id="particles-js"></div>
+<div class="interactive-container">
+    <h1><i class="fas fa-fire"></i> 体育精神互动体验</h1>
+    <div class="sub">火炬传递 · 签名传承 · 青春宣言</div>
+
+    <!-- 火炬传递互动 -->
+    <div class="torch-section">
+        <div class="torch" id="torchIcon">
+            <i class="fas fa-fire"></i>
+        </div>
+        <div class="flame-bar">
+            <div class="flame-fill" id="flameFill"></div>
+        </div>
+        <p id="torchMsg">🔥 点击火炬，传递体育精神薪火！</p>
+        <div class="torch-stats">
+            <span><i class="fas fa-users"></i> 传承人数：<span id="torchCount">0</span></span>
+            <button id="resetTorchBtn" style="background:#444; color:white; padding:4px 12px;">重置火炬</button>
+        </div>
+    </div>
+
+    <!-- 双栏：签名墙 + 纪念卡生成 -->
+    <div class="two-col">
+        <!-- 左侧：签名传承 -->
+        <div class="card">
+            <h3><i class="fas fa-hand-fist"></i> 签名传承墙</h3>
+            <p>留下你的姓名，加入体育精神传承者行列</p>
+            <input type="text" id="signNameInput" placeholder="你的名字（或昵称）">
+            <button id="signBtn">✍️ 签名传承</button>
+            <div class="signature-wall" id="signatureWall"></div>
+        </div>
+
+        <!-- 右侧：纪念卡生成 + 青春宣言 -->
+        <div class="card">
+            <h3><i class="fas fa-id-card"></i> 专属纪念卡</h3>
+            <p>生成你的“体育精神传承者”纪念卡</p>
+            <input type="text" id="posterName" placeholder="输入你的名字">
+            <button id="genPosterBtn">📸 生成纪念卡</button>
+            <div id="posterView" class="poster-preview" style="display: none;"></div>
+            
+            <div style="margin-top: 1.5rem;">
+                <button id="inspireBtn" style="width: 100%;"><i class="fas fa-fire"></i> 点燃青春宣言</button>
+                <p id="inspireMsg" style="margin-top: 10px; font-size: 0.85rem; font-style: italic;"></p>
+            </div>
+        </div>
+    </div>
+    <footer>以体育魂 · 强国有我 | 每一份签名都是精神的接力</footer>
+</div>
+
+<div class="music-control" id="musicToggle"><i class="fas fa-headphones"></i> 氛围音效</div>
+
+<script>
+    // 粒子背景初始化
+    particlesJS("particles-js", {
+        "particles": {
+            "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#f5b042" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.4, "random": true },
+            "size": { "value": 2, "random": true },
+            "line_linked": { "enable": true, "distance": 130, "color": "#ffb347", "opacity": 0.2, "width": 1 },
+            "move": { "enable": true, "speed": 1.2, "direction": "none", "random": true, "out_mode": "out" }
+        },
+        "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } } },
+        "retina_detect": true
+    });
+
+    // 火炬传递逻辑
+    let flamePercent = 0;
+    let torchCounter = localStorage.getItem('torchCount') ? parseInt(localStorage.getItem('torchCount')) : 0;
+    document.getElementById('torchCount').innerText = torchCounter;
+    const flameFill = document.getElementById('flameFill');
+    function updateFlame() { flameFill.style.width = flamePercent + '%'; }
+    
+    function addTorch(amount = 20) {
+        if (flamePercent < 100) {
+            flamePercent = Math.min(100, flamePercent + amount);
+            updateFlame();
+            torchCounter++;
+            localStorage.setItem('torchCount', torchCounter);
+            document.getElementById('torchCount').innerText = torchCounter;
+            document.getElementById('torchMsg').innerHTML = '🔥 火炬熊熊燃烧！体育精神薪火相传！';
+            if (flamePercent === 100) document.getElementById('torchMsg').innerHTML = '🎉 万众一心！强国火炬彻底点亮！';
+            if (navigator.vibrate) navigator.vibrate(50);
+        } else {
+            document.getElementById('torchMsg').innerHTML = '🌟 火炬已达顶峰，感谢你的传承！';
+        }
+    }
+
+    document.getElementById('torchIcon').addEventListener('click', () => addTorch(20));
+    document.getElementById('resetTorchBtn').addEventListener('click', () => {
+        flamePercent = 0;
+        updateFlame();
+        torchCounter = 0;
+        localStorage.setItem('torchCount', 0);
+        document.getElementById('torchCount').innerText = 0;
+        document.getElementById('torchMsg').innerHTML = '🔥 火炬重新点燃，等待你的传递！';
+    });
+
+    // 签名墙 - 初始为空数组，没有任何预设名字
+    let signatures = JSON.parse(localStorage.getItem('sportsSignatures')) || [];  // 清空默认示例
+    function renderSignWall() {
+        const wall = document.getElementById('signatureWall');
+        if (signatures.length === 0) {
+            wall.innerHTML = '<div style="color:#aaa; padding:10px;">暂无签名，快来成为第一位传承者吧</div>';
+            return;
+        }
+        wall.innerHTML = signatures.map(s => `<span class="sign-tag">✍️ ${escapeHtml(s)}</span>`).join('');
+    }
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+    renderSignWall();
+    document.getElementById('signBtn').addEventListener('click', () => {
+        let name = document.getElementById('signNameInput').value.trim();
+        if (name === '') name = '热血青年';
+        // 过滤掉包含 "zzz" 或 "稻小壳" 的名字（不区分大小写）
+        if (name.toLowerCase().includes('zzz') || name.includes('稻小壳')) {
+            showFloatingMsg('❌ 请勿使用违规昵称');
+            return;
+        }
+        signatures.unshift(name);
+        if (signatures.length > 25) signatures.pop();
+        localStorage.setItem('sportsSignatures', JSON.stringify(signatures));
+        renderSignWall();
+        document.getElementById('signNameInput').value = '';
+        showFloatingMsg(`✨ ${name} 加入传承者行列 ✨`);
+    });
+
+    // 纪念卡生成
+    document.getElementById('genPosterBtn').addEventListener('click', () => {
+        let pname = document.getElementById('posterName').value.trim();
+        if (!pname) pname = '传承者';
+        const cardHtml = `<div style="background: linear-gradient(145deg, #f5b042, #e0891a); border-radius: 32px; padding: 1.2rem; text-align: center;">
+            <i class="fas fa-medal" style="font-size: 2.5rem;"></i>
+            <h3 style="margin: 8px 0;">体育精神传承者</h3>
+            <p style="font-weight: bold;">${escapeHtml(pname)}</p>
+            <p>“以体育魂 · 强国有我”</p>
+            <small>中华体育精神百年接力</small>
+        </div>`;
+        const posterDiv = document.getElementById('posterView');
+        posterDiv.innerHTML = cardHtml;
+        posterDiv.style.display = 'block';
+        showFloatingMsg(`🎉 ${pname}，你的纪念卡已生成！`);
+    });
+
+    // 青春宣言
+    document.getElementById('inspireBtn').addEventListener('click', () => {
+        document.getElementById('inspireMsg').innerHTML = '💪 强国有我，不负韶华！我将以体育精神砥砺前行！';
+        if (navigator.vibrate) navigator.vibrate(80);
+        showFloatingMsg('🔥 青春之火，照亮强国之路！');
+    });
+
+    // 浮动提示
+    function showFloatingMsg(msg) {
+        let div = document.createElement('div');
+        div.innerText = msg;
+        div.style.position = 'fixed';
+        div.style.bottom = '30%';
+        div.style.left = '50%';
+        div.style.transform = 'translateX(-50%)';
+        div.style.background = '#f5b042';
+        div.style.color = '#0a0c12';
+        div.style.padding = '10px 24px';
+        div.style.borderRadius = '40px';
+        div.style.fontWeight = 'bold';
+        div.style.zIndex = '1000';
+        div.style.backdropFilter = 'blur(8px)';
+        document.body.appendChild(div);
+        setTimeout(() => div.remove(), 1800);
+    }
+
+    // 氛围音效提示
+    document.getElementById('musicToggle').addEventListener('click', () => {
+        showFloatingMsg('🎵 沉浸式背景：想象赛场呐喊与激昂配乐，体育精神激荡心中。');
+    });
+
+    // 加载时恢复火炬进度（如果之前有保存）
+    let savedFlame = localStorage.getItem('flamePercent');
+    if (savedFlame) {
+        flamePercent = parseInt(savedFlame);
+        updateFlame();
+    }
+    window.addEventListener('beforeunload', () => {
+        localStorage.setItem('flamePercent', flamePercent);
+    });
+</script>
+</body>
+</html>
